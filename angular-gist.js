@@ -15,9 +15,17 @@ angular.module('gist')
         iframe.id = "gist-" + gistId;
         element[0].appendChild(iframe);
 
+        var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+
+        if(isFirefox) {
+          var heightVar = 'document.html.scrollHeight'; // Firefox scrollHeight is based on html tag
+        }else{
+          var heightVar = 'document.body.scrollHeight';
+        }
+
         var iframeHtml = '<html><head><base target="_parent"><style>table{font-size:12px;}</style>' +
           '</head><body onload="parent.document.getElementById(\'' + iframe.id + '\').style.height='+
-          'document.body.scrollHeight + \'px\'"><script type="text/javascript">' +
+          heightVar +'+ \'px\'"><script type="text/javascript">' +
           '!function(){"use strict";window.retargetLinks=function(){ var gists=' +
           'document.getElementsByClassName("gist");for(var i=0,links;i<gists.length;i++){' +
           'links=gists[i].getElementsByTagName("a");for(var j=0;j<links.length;j++){ ' + 
